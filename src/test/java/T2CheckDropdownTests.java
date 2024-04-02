@@ -1,4 +1,5 @@
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.not;
@@ -10,7 +11,9 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class T2CheckDropdownTests extends BaseTest {
 
-
+    private final SelenideElement dropdown = $(byId("dropdown"));
+    private final SelenideElement dropdownOption1 = $(byValue("1"));
+    private final SelenideElement dropdownOption2 = $(byValue("2"));
 
     /**
      * Перейти на страницу Dropdown.
@@ -19,12 +22,9 @@ public class T2CheckDropdownTests extends BaseTest {
      * <p>
      * Проверять корректное состояние каждого dropDown после каждого нажатия на него.
      */
+    @DisplayName("Check dropdown")
     @Test
     public void test2CheckDropdown() {
-
-        SelenideElement dropdown = $(byId("dropdown"));
-        SelenideElement dropdownOption1 = $(byValue("1"));
-        SelenideElement dropdownOption2 = $(byValue("2"));
 
         open(BASE_URL + "dropdown");
 

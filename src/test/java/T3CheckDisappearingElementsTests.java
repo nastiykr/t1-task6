@@ -9,20 +9,19 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class T3CheckDisappearingElementsTests extends  BaseTest{
 
+    private final ElementsCollection elements = $$(byCssSelector("li a"));
+
     /**
      * Перейти на страницу Disappearing Elements.
      * Добиться отображения 5 элементов, максимум за 10 попыток, если нет, провалить тест с ошибкой.
      * <p>
      * Для каждого обновления страницы проверять наличие 5 элементов.
-     * После нажатия на элемент добавить, появился элемент удалить, а после нажатия на элемент удалить, он удалился.
      * @RepeatedTest.
      */
 
-    @DisplayName("Search 5 elements")
-    @RepeatedTest(value = 10, name = "{displayName} - repetition {currentRepetition} of {totalRepetitions}")
+    @DisplayName("Disappearing elements.")
+    @RepeatedTest(value = 10, name = "Search 5 elements. Repetition {currentRepetition} of {totalRepetitions}")
     public void test3CheckDisappearingElements() {
-
-        ElementsCollection elements = $$(byCssSelector("li a"));
 
         open(BASE_URL + "disappearing_elements");
 

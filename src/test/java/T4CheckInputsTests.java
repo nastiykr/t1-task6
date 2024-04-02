@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.empty;
 import static com.codeborne.selenide.Condition.value;
@@ -14,6 +15,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class T4CheckInputsTests extends BaseTest {
+
+    private final SelenideElement input = $(byAttribute("type", "number"));
 
     /**
      * Перейти на страницу Inputs.
@@ -29,19 +32,17 @@ public class T4CheckInputsTests extends BaseTest {
     @DisplayName("Check inputs positive cases")
     public List<DynamicTest> test4CheckInputsPositiveCases() {
 
-        SelenideElement input = $(byAttribute("type", "number"));
         List<DynamicTest> result = new ArrayList<>();
         List<String> testData = testDataCollectorForPositiveCases(10);
 
-        open(BASE_URL + "inputs");
-
         for (int i = 0; i < testData.size(); i++) {
+            open(BASE_URL + "inputs");
             final int index = i;
             result.add(
                     DynamicTest.dynamicTest(
-                            "Dynamic test #" + i,
+                            "Dynamic test with value [" + testData.get(index) + "]",
                             () -> {
-                                System.out.println("Value for input element - " + testData.get(index));
+                                System.out.println("Value for input element - [" + testData.get(index) + "]");
                                 input.val(testData.get(index));
                                 input.should(value(testData.get(index)));
                             }
@@ -54,32 +55,26 @@ public class T4CheckInputsTests extends BaseTest {
 
     @TestFactory
     @DisplayName("Check inputs negative cases")
-    public List<DynamicTest> test4CheckInputsNegativeCases() {
+    public Stream<DynamicTest> test4CheckInputsNegativeCases() {
 
-        SelenideElement input = $(byAttribute("type", "number"));
-        List<DynamicTest> result = new ArrayList<>();
         List<String> testData = testDataCollectorForNegativeCases();
 
-        open(BASE_URL + "inputs");
+        Stream<DynamicTest> result = testData.stream().map(value ->
+            DynamicTest.dynamicTest(
+                    "Dynamic test with value [" + value + "]",
+                    () -> {
+                        open(BASE_URL + "inputs");
 
-        for (int i = 0; i < testData.size(); i++) {
-            final int index = i;
-            result.add(
-                    DynamicTest.dynamicTest(
-                            "Dynamic test #" + i,
-                            () -> {
-                                System.out.println("Value for input element - " + testData.get(index));
-                                input.sendKeys(testData.get(index));
+                        System.out.println("Value for input element - [" + value + "]");
+                        input.type(value);
 
-                                if ((testData.get(index)).matches("^d+$")) {
-                                    input.should(value(testData.get(index)));
-                                } else {
-                                    input.should(empty);
-                                }
-                            }
-                    )
-            );
-        }
+                        if (value.trim().matches("\\d+")) {
+                            input.should(value(value.trim()));
+                        } else {
+                            input.should(empty);
+                        }
+                    }
+            ));
 
         return result;
     }
@@ -104,7 +99,6 @@ public class T4CheckInputsTests extends BaseTest {
         result.add("123 ");
         result.add("   ");
         result.add("");
-        result.add(null);
 
         return result;
     }

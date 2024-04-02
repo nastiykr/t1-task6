@@ -1,6 +1,13 @@
+buildscript {
+    ext {
+        allureVersion = "2.26.0"
+    }
+}
+
 plugins {
     id 'java'
     id 'io.qameta.allure' version '2.11.2'
+    id 'io.qameta.allure-adapter' version '2.11.2'
 }
 
 group = 'org.example'
@@ -10,14 +17,26 @@ repositories {
     mavenCentral()
 }
 
+
+
+allure {
+    version.set("${allureVersion}")
+    adapter {
+        aspectjVersion.set("1.9.19")
+
+        aspectjWeaver.set(true)
+    }
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
-    implementation 'com.codeborne:selenide:7.2.2'
-    implementation 'io.qameta.allure:allure-selenide:2.26.0'
-    implementation 'org.aspectj:aspectjweaver:1.9.21.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.10.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.10.2"
+    implementation "com.codeborne:selenide:7.2.2"
+    implementation "io.qameta.allure:allure-selenide:$allureVersion"
+    implementation "org.aspectj:aspectjweaver:1.9.21.2"
 }
 
 test {
     useJUnitPlatform()
 }
+

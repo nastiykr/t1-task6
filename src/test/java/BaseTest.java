@@ -13,7 +13,7 @@ public class BaseTest {
 
     @BeforeEach
     void setup() {
-        Configuration.timeout = 10000;
+        Configuration.timeout = 4000;
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)

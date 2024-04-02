@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class T7CheckAddRemoveElementsTests extends BaseTest{
+public class T7CheckAddRemoveElementsTests extends BaseTest {
 
     SelenideElement addElementButton = $(byText("Add Element"));
     ElementsCollection deleteButtons = $$(byClassName("added-manually"));
@@ -40,7 +40,7 @@ public class T7CheckAddRemoveElementsTests extends BaseTest{
             final int index = i;
             result.add(
                     DynamicTest.dynamicTest(
-                            "Dynamic test #" + i,
+                            "Dynamic test cout_add = [" + countClickAddList.get(index) + "] and cout_delete = [" + countClickDeleteList.get(index) + "]",
                             () -> {
                                 open(BASE_URL + "add_remove_elements/");
                                 System.out.println("count click add - " + countClickAddList.get(index));
@@ -50,6 +50,7 @@ public class T7CheckAddRemoveElementsTests extends BaseTest{
                                 System.out.println("count click delete - " + countClickDeleteList.get(index));
                                 System.out.println("------------------------------------------------------ ");
                                 clickDeleteButton(countClickDeleteList.get(index));
+                                System.out.println("------------------------------------------------------ ");
                                 checkCountElementsAfterAddAndDelete(countClickAddList.get(index), countClickDeleteList.get(index));
                             }
                     )
@@ -62,8 +63,8 @@ public class T7CheckAddRemoveElementsTests extends BaseTest{
     @Step("Click Add button")
     private void clickAddButton(int countClickAdd) {
         for (int i = 1; i <= countClickAdd; i++) {
-            System.out.println("click add number - " + i);
             addElementButton.click();
+            System.out.println("click add number - " + i);
         }
         deleteButtons.should(size(countClickAdd));
     }
@@ -72,17 +73,14 @@ public class T7CheckAddRemoveElementsTests extends BaseTest{
     private void clickDeleteButton(int countClickDelete) {
         for (int i = 1; i <= countClickDelete; i++) {
             Random rand = new Random();
-            System.out.println("click delete number - " + i);
             deleteButtons.get(rand.nextInt(deleteButtons.size() - i)).click();
+            System.out.println("click delete number - " + i);
         }
     }
 
     @Step("Check count elements after add and delete")
     private void checkCountElementsAfterAddAndDelete(int countClickAdd, int countClickDelete) {
-        try {
-            deleteButtons.should(size(countClickAdd - countClickDelete));
-        } catch (AssertionError e) {
-            throw new AssertionError("Количество оставшихся элементов после добавления и удаления не соответствует ожидаемому");
-        }
+        deleteButtons.should(size(countClickAdd - countClickDelete));
+        System.out.println("lost delete buttons -" + (countClickAdd - countClickDelete));
     }
 }
