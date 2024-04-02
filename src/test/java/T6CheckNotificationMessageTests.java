@@ -9,12 +9,11 @@ public class T6CheckNotificationMessageTests extends BaseTest {
 
     /**
      * Перейти на страницу Notification Message.
-     * Кликать до тех пор, пока не покажется уведомление Action successful.
      * После каждого неудачного клика закрывать всплывающее уведомление.
      * <p>
      * Добавить проверку, что всплывающее уведомление должно быть Successfull.
      * Если нет – провалить тест.
-     * Repeated Test.
+     *  @RepeatedTest. Выполнить тест 5 раз
      */
     @Test
     public void test6CheckNotificationMessage() {

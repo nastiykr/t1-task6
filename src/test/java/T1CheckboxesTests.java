@@ -1,4 +1,5 @@
 import com.codeborne.selenide.ElementsCollection;
+import io.qameta.allure.Step;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -10,6 +11,8 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class T1CheckboxesTests extends BaseTest {
 
+    ElementsCollection checkboxes = $$(byAttribute("type", "checkbox"));
+
     /**
      * Перейти на страницу Checkboxes.
      * Выделить первый чекбокс, снять выделение со второго чекбокса.
@@ -20,22 +23,43 @@ public class T1CheckboxesTests extends BaseTest {
      */
     @ParameterizedTest(name = "Check checkboxes #{index}")
     @ValueSource(ints = {0, 1})
-    public void test1CheckCheckboxes(int indicator) {
-
-        ElementsCollection checkboxes = $$(byAttribute("type", "checkbox"));
+    public void test11CheckCheckboxes(int index) {
 
         open(BASE_URL + "checkboxes");
 
-        if (indicator == 0) {
-            checkboxes.get(0).click();
-            checkboxes.get(0).should(selected);
+        boolean currentState = isCheckboxSelected(index);
 
-            checkboxes.get(1).should(selected);
+        checkboxes.get(index).click();
+
+        checkCheckboxSelected(currentState, index);
+    }
+
+    @ParameterizedTest(name = "Check checkboxes #{index}")
+    @ValueSource(booleans = {true, false})
+    public void test12CheckCheckboxes(boolean isNaturalOrder) {
+
+        open(BASE_URL + "checkboxes");
+
+        //boolean currentState = isCheckboxSelected(index);
+
+        //checkboxes.get(index).click();
+
+        //checkCheckboxSelected(currentState, index);
+    }
+
+
+    @Step("Проверка, выбран ли чекбокс с индексом {index}")
+    public boolean isCheckboxSelected(int index) {
+        return checkboxes.get(index).isSelected();
+    }
+
+    @Step("Проверка, что состояние чекбокса с индексом {index} изменилось")
+    public void checkCheckboxSelected(boolean currentState, int index) {
+        if (currentState) {
+            checkboxes.get(index).should(not(selected));
         } else {
-            checkboxes.get(1).click();
-            checkboxes.get(1).should(not(selected));
-
-            checkboxes.get(0).should(not(selected));
-        }
+            checkboxes.get(index).should(selected);
     }
 }
+}
+

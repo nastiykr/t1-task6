@@ -7,13 +7,15 @@ import static com.codeborne.selenide.Selectors.byCssSelector;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class T3checkDisappearingElementsTests extends  BaseTest{
+public class T3CheckDisappearingElementsTests extends  BaseTest{
 
     /**
      * Перейти на страницу Disappearing Elements.
      * Добиться отображения 5 элементов, максимум за 10 попыток, если нет, провалить тест с ошибкой.
      * <p>
-     * Для каждого обновления страницы проверять наличие 5 элементов. Использовать @RepeatedTest.
+     * Для каждого обновления страницы проверять наличие 5 элементов.
+     * После нажатия на элемент добавить, появился элемент удалить, а после нажатия на элемент удалить, он удалился.
+     * @RepeatedTest.
      */
 
     @DisplayName("Search 5 elements")
